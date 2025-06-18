@@ -11,7 +11,7 @@ import com.digitalbank.customerservice.model.KycStatus;
 @AllArgsConstructor
 @Builder
 public class CustomerResponse {
-    private Long id;
+    private String id;
     private String firstName;
     private String lastName;
     private String email;

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class CustomerCreatedEvent {
-    private Long id;
+    private String id;
     private String email;
     private String externalId;
     private String firstName;
