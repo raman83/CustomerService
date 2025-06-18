@@ -10,4 +10,6 @@ import com.digitalbank.customerservice.model.Customer;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByEmail(String email);
+    Optional<Customer> findByExternalId(String externalId);
+    boolean existsByEmail(String email);
 }

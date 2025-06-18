@@ -6,13 +6,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "customers")
-@Data // Generates getters, setters, toString, equals, and hashCode
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,5 +31,23 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private KycStatus kycStatus;
 
-    // getters, setters, constructors
+    @Column(unique = true)
+    private String externalId;
+
+    private Boolean active;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+        this.active = true;
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
