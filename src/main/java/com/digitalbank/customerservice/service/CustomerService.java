@@ -43,6 +43,13 @@ public class CustomerService {
         return mapper.toResponse(customer);
     }
     
+    public boolean exists(String externalId) {
+        return repository.findByExternalId(externalId).isPresent();
+            
+    }
+    
+   
+    
     public CustomerResponse updateCustomer(Long id, UpdateCustomerRequest request) {
         Customer customer = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Customer not found"));
