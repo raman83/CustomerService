@@ -20,6 +20,12 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: update
+      
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/.well-known/jwks.json 
 
 application:
   name: customer-service

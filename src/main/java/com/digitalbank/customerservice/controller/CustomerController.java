@@ -1,5 +1,6 @@
 package com.digitalbank.customerservice.controller;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class CustomerController {
 
     
     @GetMapping("/customers/external-id/{externalId}")
+    @PreAuthorize("hasAuthority('SCOPE_fdx:customers.read')")
     public ResponseEntity<CustomerResponse> getCustomerByExternalId(@PathVariable String externalId) {
         return ResponseEntity.ok(service.getByExternalId(externalId));
     }
@@ -43,11 +45,13 @@ public class CustomerController {
 
 
     @GetMapping("/exists")
+    @PreAuthorize("hasAuthority('SCOPE_fdx:customers.read')")
     public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
         return ResponseEntity.ok(service.existsByEmail(email));
     }
     
     @GetMapping("/customers/{externalId}/exists")
+    @PreAuthorize("hasAuthority('SCOPE_fdx:customers.read')")
     public boolean exists(@PathVariable String externalId) {
         return service.exists(externalId);
     }
