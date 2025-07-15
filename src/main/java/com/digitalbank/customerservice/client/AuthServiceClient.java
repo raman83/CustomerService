@@ -5,11 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(
-    name = "auth-service",
-    url = "http://localhost:8081/api/v1",
-    fallback = AuthServiceClientFallback.class
-)
+
+@FeignClient(name = "auth-service", url = "${auth.service.url}", fallback = AuthServiceClientFallback.class)
 public interface AuthServiceClient {
 
     @PostMapping("/customer/register")
