@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableFeignClients
 @ComponentScan(basePackages = {
         "com.digitalbank.customerservice",
-        "com.commons.security"
+        "com.commons"
 })
 public class CusomerServiceApplication {
 

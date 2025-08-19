@@ -1,8 +1,10 @@
 package com.digitalbank.customerservice.kafka;
 
 
-import lombok.*;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +16,5 @@ public class CustomerCreatedEvent {
     private String externalId;
     private String firstName;
     private String lastName;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // <-- switched from LocalDateTime
 }

@@ -22,4 +22,5 @@ public class CustomerResponse {
     private KycStatus kycStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer version;
 }

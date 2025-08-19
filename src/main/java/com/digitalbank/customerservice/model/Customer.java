@@ -9,45 +9,56 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
-@Entity
-@Table(name = "customers")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
+@Entity
+@Table(name = "customers",
+  uniqueConstraints = {
+    @UniqueConstraint(name="uniq_customers_email", columnNames = "email"),
+    @UniqueConstraint(name="uniq_customers_external_id", columnNames = "external_id")
+})
 public class Customer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
-    private String address;
+	  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	  private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private KycStatus kycStatus;
+	  @Version
+	  @Column(name = "version", nullable = false)
+	  private Integer version; // optimistic concurrency
 
-    @Column(unique = true)
-    private String externalId;
+	  @Column(name="first_name", nullable=false) private String firstName;
+	  @Column(name="last_name",  nullable=false) private String lastName;
+	  @Column(name="email",      nullable=false) private String email;
+	  @Column(name="phone")      private String phone;
+	  @Column(name="address",    nullable=false) private String address;
 
-    private Boolean active;
+	  @Column(name="external_id", nullable=false, unique=true)
+	  private String externalId; // treat as idempotency key for Create
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+	  @Enumerated(EnumType.STRING)
+	  @Column(name="kyc_status", nullable=false)
+	  private KycStatus kycStatus;
 
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
-        this.active = true;
-    }
+	  @Column(name="active", nullable=false) private Boolean active;
 
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+	  @Column(name="request_fingerprint", nullable=false)
+	  private String requestFingerprint;
+
+	  @Column(name="created_at", nullable=false) private LocalDateTime createdAt;
+	  @Column(name="updated_at", nullable=false) private LocalDateTime updatedAt;
+
+	  @PrePersist
+	  void prePersist() {
+	    this.createdAt = this.updatedAt = LocalDateTime.now();
+	  }
+	  @PreUpdate
+	  void preUpdate() {
+	    this.updatedAt = LocalDateTime.now();
+	  }
 }
